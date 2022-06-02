@@ -1,10 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "cars")
@@ -12,10 +9,16 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String mark;
     private String bodyType;
     private String description;
     private boolean sold;
+
+    @Temporal(TemporalType.DATE)
+    private Date created = new Date();
+
+    @ManyToOne
+    @JoinColumn(name = "carmark_id")
+    private CarMark carMark;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos = new ArrayList<>();
@@ -26,13 +29,12 @@ public class Car {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "history_owner", joinColumns = {
-            @JoinColumn(name = "driver_id", nullable = false, updatable = false)
+                @JoinColumn(name = "driver_id", nullable = false, updatable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "car_id", nullable = false, updatable = false)
+                @JoinColumn(name = "car_id", nullable = false, updatable = false)
             }
     )
-
     private Set<Driver> drivers = new HashSet<>();
 
     public Car() {
@@ -44,14 +46,6 @@ public class Car {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getMark() {
-        return mark;
-    }
-
-    public void setMark(String mark) {
-        this.mark = mark;
     }
 
     public String getBodyType() {
@@ -100,5 +94,34 @@ public class Car {
 
     public void setSold(boolean sold) {
         this.sold = sold;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public CarMark getCarMark() {
+        return carMark;
+    }
+
+    public void setCarMark(CarMark carMark) {
+        this.carMark = carMark;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{"
+                + "id=" + id
+                + ", bodyType='" + bodyType + '\''
+                + ", description='" + description + '\''
+                + ", sold=" + sold
+                + ", created=" + created
+                + ", carMark=" + carMark
+                + ", engine=" + engine
+                + '}';
     }
 }

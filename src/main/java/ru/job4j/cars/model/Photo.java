@@ -10,7 +10,6 @@ public class Photo {
     private int id;
     private String title;
     private byte[] photo;
-    private int carId;
 
     public Photo() {
     }
@@ -37,13 +36,5 @@ public class Photo {
 
     public void setPhoto(byte[] bytes) {
         this.photo = bytes;
-    }
-
-    public int getCarId() {
-        return carId;
-    }
-
-    public void setCarId(int carId) {
-        this.carId = carId;
     }
 }
