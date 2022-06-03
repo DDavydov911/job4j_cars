@@ -55,7 +55,8 @@ public class AdRepository {
                 "select distinct c from Car c "
                 + "join fetch c.engine "
                 + "join fetch c.carMark "
-                + "join fetch c.photos p ", Car.class
+                + "left join fetch c.photos p "
+                + "WHERE p IS NOT NULL", Car.class
                 )
                 .list()
         );
