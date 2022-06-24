@@ -66,11 +66,15 @@ public class AdvController {
                          @RequestParam("file") MultipartFile file) throws IOException {
         Car car = new Car(0, bodyType, new CarMark(carMarkNane),
                 new Engine(Integer.parseInt(power)));
-        if (file != null) {
-            List<Photo> photos = new ArrayList<>();
-            photos.add(new Photo(file.getBytes()));
-            car.setPhotos(photos);
+        System.out.println("File is nulL: " + file == null);
+        System.out.println("File is empty: " + file.isEmpty());
+        System.out.println("File's size is : " + file.getSize());
+        System.out.println("File's content is : " + file);
+        System.out.println("Car has empty list: " + car.getPhotos().isEmpty());
+        if (file.getSize() != 0) {
+            car.getPhotos().add(new Photo(file.getBytes()));
         }
+        System.out.println("Car has empty list: " + car.getPhotos().isEmpty());
         ad.setCar(car);
         User user = (User) session.getAttribute("user");
         Ads adv = advService.addAdv(ad);
@@ -117,6 +121,7 @@ public class AdvController {
         }
         model.addAttribute("user", user);
         model.addAttribute("ad", advService.findById(id));
+        System.out.println(advService.findById(id));
         return "adv";
     }
 

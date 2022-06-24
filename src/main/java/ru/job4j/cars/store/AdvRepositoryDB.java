@@ -106,7 +106,7 @@ public class AdvRepositoryDB {
                                         + "join fetch c.carMark "
                                         + "left join fetch c.engine "
                                         + "left join fetch c.photos p "
-                                        + "where p.photo is not null and a.sold = false "
+                                        + "where p.photo is not empty and a.sold = false "
                                         + "order by a.id", Ads.class
                         )
                         .list()

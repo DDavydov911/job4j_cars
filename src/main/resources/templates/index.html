@@ -57,7 +57,7 @@
             </thead>
             <tbody>
             <tr th:each="ad: ${ads}">
-                <td th:if="${!ad.car.photos.isEmpty()}">
+                <td>
                     <a style="display: block" th:href="@{|/ad/${ad.id}|}">
                         <img th:width="150" th:high="150" th:src="@{|/carPhoto/${ad.car.id}|}">
                     </a>

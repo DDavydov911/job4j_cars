@@ -37,12 +37,14 @@ public class UserController {
 
     @PostMapping("/registration")
     public String registration(Model model, @ModelAttribute User user) {
+        System.out.println("UserController_registration user model: " + user);
         Optional<User> regUser = userService.add(user);
+        System.out.println("UserController_registration user after registration: " + user);
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            return "redirect:/fail";
+            return "redirect:/registration";
         }
-        return "redirect:/success";
+        return "redirect:/index";
     }
 
     @PostMapping("/login")
@@ -51,15 +53,16 @@ public class UserController {
                 user.getEmail(), user.getPassword()
         );
         if (userDb.isEmpty()) {
-            return "redirect:/loginPage?fail=true";
+            return "redirect:/login?fail=true";
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
         return "redirect:/index";
     }
 
-    @GetMapping("/success")
-    public String success() {
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/index";
     }
 }
