@@ -4,19 +4,23 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "carmarks")
-public class CarMark {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
+    private String email;
+    private String password;
 
-    public CarMark() {
+    public User() {
     }
 
-    public CarMark(String name) {
+    public User(int id, String name, String email, String password) {
+        this.id = id;
         this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
     public int getId() {
@@ -35,9 +39,20 @@ public class CarMark {
         this.name = name;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -48,15 +63,22 @@ public class CarMark {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CarMark carMark = (CarMark) o;
-        return id == carMark.id;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "CarMark{"
+        return "User{"
                 + "id=" + id
                 + ", name='" + name + '\''
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
                 + '}';
     }
 }

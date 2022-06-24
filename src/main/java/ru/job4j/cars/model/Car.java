@@ -10,8 +10,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String bodyType;
-    private String description;
-    private boolean sold;
 
     @Temporal(TemporalType.DATE)
     private Date created = new Date();
@@ -40,6 +38,13 @@ public class Car {
     public Car() {
     }
 
+    public Car(int id, String bodyType, CarMark carMark, Engine engine) {
+        this.id = id;
+        this.bodyType = bodyType;
+        this.carMark = carMark;
+        this.engine = engine;
+    }
+
     public int getId() {
         return id;
     }
@@ -54,14 +59,6 @@ public class Car {
 
     public void setBodyType(String bodyType) {
         this.bodyType = bodyType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<Photo> getPhotos() {
@@ -88,14 +85,6 @@ public class Car {
         this.drivers = drivers;
     }
 
-    public boolean isSold() {
-        return sold;
-    }
-
-    public void setSold(boolean sold) {
-        this.sold = sold;
-    }
-
     public Date getCreated() {
         return created;
     }
@@ -117,11 +106,10 @@ public class Car {
         return "Car{"
                 + "id=" + id
                 + ", bodyType='" + bodyType + '\''
-                + ", description='" + description + '\''
-                + ", sold=" + sold
                 + ", created=" + created
                 + ", carMark=" + carMark
                 + ", engine=" + engine
+                + ", photos=" + photos.size()
                 + '}';
     }
 }

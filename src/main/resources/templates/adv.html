@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <title>Cars</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Cars</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" th:href="@{/index}">Главная</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="card" style="width: 80%" th:object="${ad}">
+            <div class="card-header">
+                <span>Объявление id:</span>
+                <span th:text="*{id}" style="padding-left: 20px"></span>
+            </div>
+            <div class="card-body">
+                    <span th:text="${ad.created}" style="float: right"></span>
+                    <table>
+                        <tr th:if="${!ad.car.photos.isEmpty()}">
+                            <td>
+                                <img th:width="500" th:high="500" th:src="@{|/carPhoto/${ad.car.id}|}"
+                                     style="margin-left: 40%">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="min-width: 200px">
+                                <span>Марка автомобиля: </span>
+                            </td>
+                            <td>
+                                <span th:text="${ad.car.carMark.name}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Цена: </span>
+                            </td>
+                            <td>
+                                <span th:text="${ad.price}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Тип кузова: </span>
+                            </td>
+                            <td>
+                                <span th:text="${ad.car.bodyType}"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Мощность л.с.:</span>
+                            </td>
+                            <td>
+                                <span th:text="${ad.car.engine.horsePower}"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <span>Описание:</span>
+                    <div th:text="${ad.description}">
+                    </div>
+
+<!--                <form th:if="${user.name != 'Гость'}" th:action="@{/updateAdv/${ad.id}}" method="POST"-->
+                <form th:action="@{|/updateAdv/*{id}|}" method="GET"
+                      th:object="${ad}" style="padding-left: 45%">
+                    <button>
+                        <span>Изменить объявление</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -14,6 +14,10 @@ public class Photo {
     public Photo() {
     }
 
+    public Photo(byte[] photo) {
+        this.photo = photo;
+    }
+
     public int getId() {
         return id;
     }

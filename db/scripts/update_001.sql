@@ -7,8 +7,13 @@ create table if not exists engines(
     horsepower INTEGER
 );
 
+INSERT INTO engines(horsepower) VALUES (72);
+INSERT INTO engines(horsepower) VALUES (96);
 INSERT INTO engines(horsepower) VALUES (100);
+INSERT INTO engines(horsepower) VALUES (123);
 INSERT INTO engines(horsepower) VALUES (150);
+INSERT INTO engines(horsepower) VALUES (180);
+INSERT INTO engines(horsepower) VALUES (200);
 
 create table if not exists carmarks(
     id serial primary key,
@@ -43,3 +48,16 @@ create table if not exists history_owner(
     driver_id int not null references drivers(id),
     car_id int not null references cars(id)
 );
+
+CREATE TABLE IF NOT EXISTS ads(
+    id SERIAL PRIMARY KEY,
+    description VARCHAR(255),
+    car_id INTEGER NOT NULL UNIQUE REFERENCES cars(id)
+);
+
+CREATE TABLE IF NOT EXISTS users(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR (255),
+    email VARCHAR (255),
+    password VARCHAR (255)
+)

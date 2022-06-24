@@ -10,6 +10,21 @@ public class Engine {
     private int id;
     private int horsePower;
 
+    public Engine() {
+    }
+
+    public Engine(int horsePower) {
+        this.horsePower = horsePower;
+    }
+
+    public int getHorsePower() {
+        return horsePower;
+    }
+
+    public void setHorsePower(int horsePower) {
+        this.horsePower = horsePower;
+    }
+
     @Override
     public String toString() {
         return "Engine{"
