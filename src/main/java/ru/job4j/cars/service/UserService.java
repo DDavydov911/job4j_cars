@@ -20,4 +20,12 @@ public class UserService {
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
         return userStoreDB.findUserByEmailAndPassword(email, password);
     }
+
+    public Optional<User> getUserById(int id) {
+        return userStoreDB.getUserById(id);
+    }
+
+    public void update(User user1) {
+        userStoreDB.update(user1);
+    }
 }

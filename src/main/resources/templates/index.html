@@ -45,6 +45,7 @@
                     </button>
                 </form>
                 <form th:if="${user.name != 'Гость'}" style="padding-left: 20px" th:action="@{/addAdv}">
+                    <input type="hidden" name="userId" th:field="${user.id}">
                     <button>Добавить объявление</button>
                 </form>
             </div>

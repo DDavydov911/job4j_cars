@@ -22,14 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public String login(Model model,
-                            @RequestParam(name = "fail", required = false) Boolean fail) {
-        System.out.println("Method loginPage()");
-        model.addAttribute("fail", fail != null);
-        return "login";
-    }
-
     @GetMapping("/registration")
     public String registrationForm() {
         return "registration";
@@ -37,14 +29,19 @@ public class UserController {
 
     @PostMapping("/registration")
     public String registration(Model model, @ModelAttribute User user) {
-        System.out.println("UserController_registration user model: " + user);
         Optional<User> regUser = userService.add(user);
-        System.out.println("UserController_registration user after registration: " + user);
         if (regUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
             return "redirect:/registration";
         }
         return "redirect:/index";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model,
+                        @RequestParam(name = "fail", required = false) Boolean fail) {
+        model.addAttribute("fail", fail != null);
+        return "login";
     }
 
     @PostMapping("/login")

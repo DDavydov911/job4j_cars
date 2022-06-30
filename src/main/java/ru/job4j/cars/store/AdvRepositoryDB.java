@@ -48,6 +48,9 @@ public class AdvRepositoryDB {
                     session.save(engine);
                     session.saveOrUpdate(mark);
                     session.save(car);
+                    if (ad.getUser() != null) {
+                        session.save(ad.getUser());
+                    }
                     session.save(ad);
                     return ad;
                 }
@@ -58,11 +61,11 @@ public class AdvRepositoryDB {
         return this.tx(
                 session -> session.createQuery(
                                 "select distinct a from Ads a "
-                                        + "join fetch a.car c "
-                                        + "left join fetch c.engine "
+                                        + "left join fetch a.car c "
                                         + "left join fetch c.photos p "
+                                        + "left join fetch c.engine "
                                         + "where a.sold = false "
-                                        + "order by a.id", Ads.class
+                                        + "order by a.id desc", Ads.class
                         )
                         .list()
         );
@@ -72,7 +75,7 @@ public class AdvRepositoryDB {
         return this.tx(
                 session -> session.createQuery(
                                 "select distinct a from Ads a "
-                                        + "join fetch a.car c "
+                                        + "left join fetch a.car c "
                                         + "left join fetch c.engine "
                                         + "left join fetch c.photos p "
                                         + "where a.id =: id", Ads.class
@@ -87,11 +90,11 @@ public class AdvRepositoryDB {
         return this.tx(
                 session -> session.createQuery(
                                 "select distinct a from Ads a "
-                                        + "join fetch a.car c "
+                                        + "left join fetch a.car c "
                                         + "left join fetch c.engine "
                                         + "left join fetch c.photos p "
                                         + "where a.created >= :day and a.sold = false "
-                                        + "order by a.id", Ads.class
+                                        + "order by a.id desc ", Ads.class
                         )
                         .setParameter("day", yesterday)
                         .list()
@@ -102,12 +105,12 @@ public class AdvRepositoryDB {
         return this.tx(
                 session -> session.createQuery(
                                 "select distinct a from Ads a "
-                                        + "join fetch a.car c "
-                                        + "join fetch c.carMark "
+                                        + "left join fetch a.car c "
+                                        + "left join fetch c.carMark "
                                         + "left join fetch c.engine "
                                         + "left join fetch c.photos p "
-                                        + "where p.photo is not empty and a.sold = false "
-                                        + "order by a.id", Ads.class
+                                        + "where p.photo is not null and a.sold = false "
+                                        + "order by a.id desc", Ads.class
                         )
                         .list()
         );
@@ -117,12 +120,12 @@ public class AdvRepositoryDB {
         return this.tx(
                 session -> session.createQuery(
                                 "select distinct a from Ads a "
-                                        + "join fetch a.car c "
-                                        + "join fetch c.carMark m "
+                                        + "left join fetch a.car c "
+                                        + "left join fetch c.carMark m "
                                         + "left join fetch c.engine "
                                         + "left join c.photos p "
                                         + "where m.name = :mark and "
-                                        + "a.sold = false", Ads.class
+                                        + "a.sold = false order by a.id desc", Ads.class
                         )
                         .setParameter("mark", carMark)
                         .list()
@@ -137,5 +140,18 @@ public class AdvRepositoryDB {
                     return adv;
                 }
         );
+    }
+
+    public boolean deleteAdv(int id) {
+        return Boolean.TRUE.equals(this.tx(
+                session -> {
+                    Ads ad = session.get(Ads.class, id);
+                    session.remove(ad.getCar().getCarMark());
+                    session.remove(ad.getCar().getEngine());
+                    session.remove(ad.getCar());
+                    session.remove(ad);
+                    return true;
+                }
+        ));
     }
 }

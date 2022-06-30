@@ -14,6 +14,10 @@ public class Ads {
     private int price;
     private boolean sold;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "USER_ID_FK"))
+    private User user;
+
     @OneToOne
     @JoinColumn(name = "car_id")
     private Car car;
@@ -79,6 +83,14 @@ public class Ads {
         this.sold = sold;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,12 +110,16 @@ public class Ads {
 
     @Override
     public String toString() {
-        return "Ads{"
-                + "id=" + id
-                + ", description='" + description + '\''
-                + ", car=" + car
-                + ", price=" + price
-                + ", created=" + created
-                + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Ads{" + "id=").append(id)
+                .append(", description='").append(description).append('\'')
+                .append(", car=").append(car)
+                .append(", price=").append(price)
+                .append(", created=").append(created);
+        if (user != null) {
+            sb.append(", user id: ").append(user.getId());
+        }
+        sb.append('}');
+        return sb.toString();
     }
 }

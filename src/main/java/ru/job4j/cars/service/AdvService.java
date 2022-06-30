@@ -21,13 +21,11 @@ public class AdvService {
     }
 
     public List<Ads> findAll() {
-        List<Ads> list = new ArrayList<>(store.findAll());
-        return list;
+        return new ArrayList<>(store.findAll());
     }
 
     public List<Ads> getAdsWithPhoto() {
-        List<Ads> list = new ArrayList<>(store.getAdsWithPhoto());
-        return list;
+        return new ArrayList<>(store.getAdsWithPhoto());
     }
 
     public Ads findById(int id) {
@@ -39,7 +37,10 @@ public class AdvService {
     }
 
     public List<Ads> findLastDayAds() {
-        List<Ads> list = new ArrayList<>(store.getLastDayAds());
-        return list;
+        return new ArrayList<>(store.getLastDayAds());
+    }
+
+    public boolean deleteAdv(int id) {
+        return store.deleteAdv(id);
     }
 }

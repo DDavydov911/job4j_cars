@@ -57,6 +57,7 @@
                             <option th:each="mark : ${carMarks}" th:value="${mark}" th:text="${mark}"></option>
                         </select>
                     </div>
+                    <input type="hidden" name="user.id" th:value="${user.id}"/>
                     <div class="form-group">
                         <label for="price">Цена</label>
                         <input type="number" class="form-control" name="price" id="price" required>

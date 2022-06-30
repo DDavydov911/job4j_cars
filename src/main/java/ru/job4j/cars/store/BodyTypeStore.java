@@ -10,7 +10,7 @@ public class BodyTypeStore {
 
     public BodyTypeStore() {
         this.bodyTypes = List.of(
-                "Седан", "Хэтчбэк", "Универсал", "Пикап"
+                "Седан", "Хэтчбэк", "Универсал", "Пикап", "Кроссовер"
         );
     }
 

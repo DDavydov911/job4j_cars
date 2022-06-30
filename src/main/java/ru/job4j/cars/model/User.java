@@ -1,6 +1,8 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +14,9 @@ public class User {
     private String name;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private final List<Ads> ads = new ArrayList<>();
 
     public User() {
     }
@@ -55,6 +60,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean addAdv(Ads ad) {
+        return ads.add(ad);
+    }
+
+    public List<Ads> getAds() {
+        return ads;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -79,6 +92,6 @@ public class User {
                 + ", name='" + name + '\''
                 + ", email='" + email + '\''
                 + ", password='" + password + '\''
-                + '}';
+                + "}";
     }
 }
