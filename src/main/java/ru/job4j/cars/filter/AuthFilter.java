@@ -17,15 +17,17 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
-        if (uri.endsWith("login") || uri.endsWith("index") || uri.endsWith("registration")) {
+        if (uri.endsWith("login") || uri.endsWith("index")
+                || uri.endsWith("registration") || uri.contains("carPhoto")) {
             chain.doFilter(req, res);
             return;
         }
-        if (req.getSession().getAttribute("user") == null) {
+        if (req.getSession().getAttribute("user") == null
+                || req.getSession().getAttribute("user.name") == "Гость") {
             res.sendRedirect(req.getContextPath() + "/index");
             return;
         }
         chain.doFilter(req, res);
     }
 }
- */
+*/

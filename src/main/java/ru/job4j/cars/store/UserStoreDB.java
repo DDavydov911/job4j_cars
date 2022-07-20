@@ -1,37 +1,18 @@
 package ru.job4j.cars.store;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ads;
 import ru.job4j.cars.model.User;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Repository
-public class UserStoreDB {
+public class UserStoreDB implements RepoTrans {
 
     private final SessionFactory sf;
 
     public UserStoreDB(SessionFactory sf) {
         this.sf = sf;
-    }
-
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-            return null;
-        } finally {
-            session.close();
-        }
     }
 
     public Optional<User> add(User user) {
@@ -40,7 +21,7 @@ public class UserStoreDB {
                         session -> {
                             session.save(user);
                             return user;
-                        })
+                        }, sf)
         );
     }
 
@@ -52,7 +33,8 @@ public class UserStoreDB {
                         )
                         .setParameter("email", email)
                         .setParameter("pass", password)
-                        .uniqueResultOptional()
+                        .uniqueResultOptional(),
+                sf
         );
     }
 
@@ -66,7 +48,8 @@ public class UserStoreDB {
                                         + "where u.id =: ID ", User.class
                         )
                         .setParameter("ID", id)
-                        .uniqueResultOptional()
+                        .uniqueResultOptional(),
+                sf
         );
     }
 
@@ -83,7 +66,8 @@ public class UserStoreDB {
                     }
                     session.update(u);
                     return u;
-                }
+                },
+                sf
         );
     }
 }

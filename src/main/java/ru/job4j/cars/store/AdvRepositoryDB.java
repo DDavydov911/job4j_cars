@@ -1,38 +1,19 @@
 package ru.job4j.cars.store;
 
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 
 @Repository
-public class AdvRepositoryDB {
+public class AdvRepositoryDB implements RepoTrans {
     private final SessionFactory sf;
 
     public AdvRepositoryDB(SessionFactory sf) {
         this.sf = sf;
-    }
-
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-            return null;
-        } finally {
-            session.close();
-        }
     }
 
     public Ads add(Ads ad) {
@@ -53,7 +34,7 @@ public class AdvRepositoryDB {
                     }
                     session.save(ad);
                     return ad;
-                }
+                }, sf
         );
     }
 
@@ -67,7 +48,8 @@ public class AdvRepositoryDB {
                                         + "where a.sold = false "
                                         + "order by a.id desc", Ads.class
                         )
-                        .list()
+                        .list(),
+                sf
         );
     }
 
@@ -81,7 +63,8 @@ public class AdvRepositoryDB {
                                         + "where a.id =: id", Ads.class
                         )
                         .setParameter("id", adsId)
-                        .uniqueResult()
+                        .uniqueResult(),
+                sf
         );
     }
 
@@ -97,7 +80,8 @@ public class AdvRepositoryDB {
                                         + "order by a.id desc ", Ads.class
                         )
                         .setParameter("day", yesterday)
-                        .list()
+                        .list(),
+                sf
         );
     }
 
@@ -112,7 +96,8 @@ public class AdvRepositoryDB {
                                         + "where p.photo is not null and a.sold = false "
                                         + "order by a.id desc", Ads.class
                         )
-                        .list()
+                        .list(),
+                sf
         );
     }
 
@@ -128,7 +113,8 @@ public class AdvRepositoryDB {
                                         + "a.sold = false order by a.id desc", Ads.class
                         )
                         .setParameter("mark", carMark)
-                        .list()
+                        .list(),
+                sf
         );
     }
 
@@ -138,7 +124,7 @@ public class AdvRepositoryDB {
                     session.update(adv.getCar());
                     session.update(adv);
                     return adv;
-                }
+                }, sf
         );
     }
 
@@ -151,7 +137,7 @@ public class AdvRepositoryDB {
                     session.remove(ad.getCar());
                     session.remove(ad);
                     return true;
-                }
+                }, sf
         ));
     }
 }
